@@ -1,5 +1,6 @@
 package com.enkel.dreamshops.service.product;
 
+import com.enkel.dreamshops.dto.ProductDto;
 import com.enkel.dreamshops.model.Product;
 import com.enkel.dreamshops.request.AddProductRequest;
 import com.enkel.dreamshops.request.ProductUpdateRequest;
@@ -28,4 +29,8 @@ public interface IProductService {
     List<Product> getProductsByBrandAndName(String brand, String name);
 
     Long countProductsByBrandAndName(String brand, String name);
+
+    List<ProductDto> getConvertedProducts(List<Product> products);
+
+    ProductDto convertToDto(Product product);
 }
