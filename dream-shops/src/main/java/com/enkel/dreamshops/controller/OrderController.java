@@ -1,5 +1,6 @@
 package com.enkel.dreamshops.controller;
 
+import com.enkel.dreamshops.dto.OrderDto;
 import com.enkel.dreamshops.exceptions.ResourceNotFoundException;
 import com.enkel.dreamshops.model.Order;
 import com.enkel.dreamshops.response.ApiResponse;
@@ -31,7 +32,7 @@ public class OrderController {
     @GetMapping("/{orderId}/order")
     public ResponseEntity<ApiResponse> getOrderById(@PathVariable Long orderId) {
         try {
-            Order order = orderService.getOrder(orderId);
+            OrderDto order = orderService.getOrder(orderId);
             return ResponseEntity.ok(new ApiResponse("Order retrieved successfully!", order));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -42,7 +43,7 @@ public class OrderController {
     @GetMapping("/{userId}/orders")
     public ResponseEntity<ApiResponse> getUserOrders(@PathVariable Long userId) {
         try {
-            List<Order> userOrders = orderService.getUserOrders(userId);
+            List<OrderDto> userOrders = orderService.getUserOrders(userId);
             return ResponseEntity.ok(new ApiResponse("User's orders retrieved successfully!", userOrders));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
