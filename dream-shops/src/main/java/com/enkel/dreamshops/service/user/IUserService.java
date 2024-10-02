@@ -1,5 +1,6 @@
 package com.enkel.dreamshops.service.user;
 
+import com.enkel.dreamshops.dto.UserDto;
 import com.enkel.dreamshops.model.User;
 import com.enkel.dreamshops.request.CreateUserRequest;
 import com.enkel.dreamshops.request.UserUpdateRequest;
@@ -12,4 +13,6 @@ public interface IUserService {
     User updateUser(UserUpdateRequest request, Long userId);
 
     void deleteUser(Long userId);
+
+    UserDto convertUserToDto(User user);
 }

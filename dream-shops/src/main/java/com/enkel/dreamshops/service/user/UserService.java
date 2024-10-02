@@ -1,5 +1,6 @@
 package com.enkel.dreamshops.service.user;
 
+import com.enkel.dreamshops.dto.UserDto;
 import com.enkel.dreamshops.exceptions.AlreadyExistsException;
 import com.enkel.dreamshops.exceptions.ResourceNotFoundException;
 import com.enkel.dreamshops.model.User;
@@ -7,6 +8,7 @@ import com.enkel.dreamshops.repository.UserRepository;
 import com.enkel.dreamshops.request.CreateUserRequest;
 import com.enkel.dreamshops.request.UserUpdateRequest;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,6 +17,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService implements IUserService {
     private final UserRepository userRepository;
+
+    private final ModelMapper modelMapper;
 
     @Override
     public User getUserById(Long userId) {
@@ -52,5 +56,10 @@ public class UserService implements IUserService {
                 .ifPresentOrElse(userRepository :: delete, () -> {
                     throw new ResourceNotFoundException("User not found!");
                 });
+    }
+
+    @Override
+    public UserDto convertUserToDto(User user){
+        return modelMapper.map(user, UserDto.class);
     }
 }
