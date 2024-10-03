@@ -1,6 +1,7 @@
 package com.enkel.dreamshops.controller;
 
 import com.enkel.dreamshops.dto.ProductDto;
+import com.enkel.dreamshops.exceptions.AlreadyExistsException;
 import com.enkel.dreamshops.exceptions.ResourceNotFoundException;
 import com.enkel.dreamshops.model.Product;
 import com.enkel.dreamshops.request.AddProductRequest;
@@ -13,8 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -47,8 +47,8 @@ public class ProductController {
             Product theProduct = productService.addProduct(product);
             ProductDto productDto = productService.convertToDto(theProduct);
             return ResponseEntity.ok(new ApiResponse("Product added successfully!", productDto));
-        } catch (Exception e) {
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR)
+        } catch (AlreadyExistsException e) {
+            return ResponseEntity.status(CONFLICT)
                     .body(new ApiResponse(e.getMessage(), null));
         }
     }

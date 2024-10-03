@@ -2,6 +2,7 @@ package com.enkel.dreamshops.service.product;
 
 import com.enkel.dreamshops.dto.ImageDto;
 import com.enkel.dreamshops.dto.ProductDto;
+import com.enkel.dreamshops.exceptions.AlreadyExistsException;
 import com.enkel.dreamshops.exceptions.ProductNotFoundException;
 import com.enkel.dreamshops.exceptions.ResourceNotFoundException;
 import com.enkel.dreamshops.model.Category;
@@ -33,6 +34,11 @@ public class ProductService implements IProductService {
         // If yes, set it as the new product cateogry
         // If no, save it as a new category, and then set it as the new product category
 
+        if(productExists(request.getName(), request.getBrand())){
+            throw new AlreadyExistsException(request.getBrand() + " " + request.getName() + " already exists!"
+                    + " You may update this product instead.");
+        }
+
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
                 .orElseGet(() -> {
                     Category newCategory = new Category(request.getCategory().getName());
@@ -40,6 +46,10 @@ public class ProductService implements IProductService {
                 });
         request.setCategory(category);
         return productRepository.save(createProduct(request, category));
+    }
+
+    private boolean productExists(String name, String brand) {
+        return productRepository.existsByNameAndBrand(name, brand);
     }
 
     private Product createProduct(AddProductRequest request, Category category) {
