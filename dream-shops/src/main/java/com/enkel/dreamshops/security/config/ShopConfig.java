@@ -1,4 +1,4 @@
-package com.enkel.dreamshops.config;
+package com.enkel.dreamshops.security.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
